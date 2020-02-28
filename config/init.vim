@@ -88,7 +88,48 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " always display status line
 set laststatus=2
 
-"" enabled 256 colors
-set t_Co=256
+""" Plugin installation
+call plug#begin()
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+call plug#end()
 
-""" Plugin section
+
+""" Plugin related configuration
+
+"" gruvbox
+set t_Co=256
+let g:gruvbox_italic = 1
+let g:gruvbox_contrast_dark = "soft"
+let g:gruvbox_italicize_comments = 1
+colorscheme gruvbox
+
+"" vim-airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = 'L'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline bugs...
+set laststatus=2

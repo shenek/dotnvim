@@ -17,7 +17,15 @@ Plugins
 
 vim-plug
 --------
-* vim plugin management
+vim plugin management
+
+gruvbox
+-------
+retro color scheme
+
+vim-airlane
+-----------
+nicer status bar (you need have fonts-powerline installed)
 
 Hints
 =====
