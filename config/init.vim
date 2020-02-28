@@ -93,6 +93,7 @@ call plug#begin()
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 
@@ -133,3 +134,52 @@ let g:airline_symbols.whitespace = 'Ξ'
 
 " airline bugs...
 set laststatus=2
+
+"" ale plugin
+" fixers
+let g:ale_fixers = {
+\  'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+\  'python': ['black', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
+\}
+let g:ale_fix_on_save = 1
+
+" signs
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+"highlight ALEErrorSign ctermbg=NONE ctermfg=red
+"highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+let g:ale_completion_enabled = 0
+
+" python
+let g:ale_python_auto_pipenv = 0
+let g:ale_virtualenv_dir_names = [$VIRTUAL_ENV]
+
+" Try to read flake8 options from an env variable
+if !empty($FLAKE8_OPTIONS)
+	let g:ale_python_flake8_options = $FLAKE8_OPTIONS
+else
+	let g:ale_python_flake8_options = "--ignore=E203 --max-line-length=100"
+endif
+
+" Try to read black options from an env variable
+if !empty($BLACK_OPTIONS)
+	let g:ale_python_black_options = $BLACK_OPTIONS
+else
+	let g:ale_python_black_options = "--line-length 100"
+endif
+"
+" Try to read isort options from an env variable
+if !empty($ISORT_OPTIONS)
+	let g:ale_python_isort_options = $ISORT_OPTIONS
+else
+	let g:ale_python_isort_options = "--line-width 100"
+endif
+
+" mypy search path
+let g:ale_python_mypy_options = "--cache-dir ~/.mypy_cache --python-executable python --ignore-missing-imports"
+
+" rust
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+let g:ale_rust_cargo_clippy_options = '--all-features -- -W clippy::style -W clippy::correctness -W clippy::complexity -W clippy::pedantic -W clippy::nursery -W clippy::perf -W clippy::cargo -A clippy::restriction -W clippy::dbg_macro -A clippy::module_name_repetitions'
+let g:ale_rust_cargo_check_all_targets = 1
+let g:ale_rust_rustfmt_options = "--edition 2018"

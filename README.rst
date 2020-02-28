@@ -27,6 +27,10 @@ vim-airlane
 -----------
 nicer status bar (you need have fonts-powerline installed)
 
+ale
+---
+asynchronous linter (integrates a various kinds of linters)
+
 Hints
 =====
 Plugin management:
