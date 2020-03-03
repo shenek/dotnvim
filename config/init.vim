@@ -93,6 +93,7 @@ call plug#begin()
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 call plug#end()
 
@@ -183,3 +184,14 @@ let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_rust_cargo_clippy_options = '--all-features -- -W clippy::style -W clippy::correctness -W clippy::complexity -W clippy::pedantic -W clippy::nursery -W clippy::perf -W clippy::cargo -A clippy::restriction -W clippy::dbg_macro -A clippy::module_name_repetitions'
 let g:ale_rust_cargo_check_all_targets = 1
 let g:ale_rust_rustfmt_options = "--edition 2018"
+
+
+"" gitgutter
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '≈'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '--'
+let g:gitgutter_sign_modified_removed = '≈-'
+let g:gitgutter_highlight_lines = 1
+
+autocmd BufWritePost * GitGutter " update on save

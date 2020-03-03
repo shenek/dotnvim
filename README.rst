@@ -27,6 +27,10 @@ vim-airlane
 -----------
 nicer status bar (you need have fonts-powerline installed)
 
+vim-gitgutter
+-------------
+show changed lines from git
+
 ale
 ---
 asynchronous linter (integrates a various kinds of linters)
