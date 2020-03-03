@@ -95,6 +95,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
+Plug 'nathanaelkane/vim-indent-guides'
 call plug#end()
 
 
@@ -192,6 +193,14 @@ let g:gitgutter_sign_modified = '≈'
 let g:gitgutter_sign_removed = '-'
 let g:gitgutter_sign_removed_first_line = '--'
 let g:gitgutter_sign_modified_removed = '≈-'
-let g:gitgutter_highlight_lines = 1
+let g:gitgutter_highlight_linenrs = 1
 
 autocmd BufWritePost * GitGutter " update on save
+
+"" vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+"let g:indent_guides_auto_colors = 0
+"hi IndentGuidesOdd  ctermbg=238
+"hi IndentGuidesEven ctermbg=239
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2

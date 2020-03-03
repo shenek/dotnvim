@@ -35,6 +35,10 @@ ale
 ---
 asynchronous linter (integrates a various kinds of linters)
 
+vim-indent-guides¬
+-----------------
+makes indentation visible
+
 Hints
 =====
 Plugin management:
