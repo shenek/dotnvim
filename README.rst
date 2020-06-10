@@ -48,6 +48,17 @@ fzf-vim
 
 Fuzzy search for neovim
 
+LanguageClient-nvim
+-------------------
+
+Better language client for neovim
+
+deoplete
+--------
+
+Completion tool
+
+
 Hints
 =====
 Plugin management:
@@ -58,4 +69,3 @@ Fuzzy search
 ------------
 :FZF*
 ff - open ripgrep dialog
-

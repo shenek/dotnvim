@@ -98,6 +98,8 @@ Plug 'dense-analysis/ale'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
 call plug#end()
 
 
@@ -140,12 +142,19 @@ let g:airline_symbols.whitespace = 'Ξ'
 set laststatus=2
 
 "" ale plugin
+
 " fixers
 let g:ale_fixers = {
 \  'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
 \  'python': ['black', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
+
+" linters
+let g:ale_linters = {
+\  'rust': ['cargo'],
+\  'python': ['flake8', 'mypy', 'bandit'],
+\}
 
 " signs
 let g:ale_sign_error = '✗'
@@ -212,3 +221,13 @@ let g:fzf_command_prefix = 'FZF'
 " Disables preview window
 let g:fzf_preview_window = ''
 nmap ff :FZFRg<cr>
+
+"" LanguageClient-neovim
+let g:LanguageClient_serverCommands = {'rust': ['rls'], 'python': ['pyls'],}
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+"" deoplete
+let g:deoplete#enable_at_startup = 1

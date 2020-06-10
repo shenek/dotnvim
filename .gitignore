@@ -1,2 +1,4 @@
 config/plugged/
 local/log
+local/lsp.log
+local/rplugin.vim
