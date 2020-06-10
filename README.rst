@@ -6,6 +6,9 @@ Link the dot files::
     cd ~/.config && ln -sf ../.nvim/config nvim
     cd ~/.local/share && ln -fs ../../.nvim/local nvim
 
+After that you need to install vim plugins using vim-plug::
+    :PlugInstall
+
 Adding a new plugin
 ===================
 * Preferend way of installation is vim-plug
@@ -40,7 +43,19 @@ vim-indent-guides¬
 -----------------
 makes indentation visible
 
+fzf-vim
+-------
+
+Fuzzy search for neovim
+
 Hints
 =====
 Plugin management:
+------------------
 :Plug*
+
+Fuzzy search
+------------
+:FZF*
+ff - open ripgrep dialog
+
