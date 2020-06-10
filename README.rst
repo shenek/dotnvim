@@ -1,9 +1,10 @@
 Installation
 ============
 
+Link the dot files::
     git clone --recursive git@github.com:shenek/dotnvim.git ~/.nvim
     cd ~/.config && ln -sf ../.nvim/config nvim
-    cd ~/.local/share && ln -sf ../../.nvim/share nvim
+    cd ~/.local/share && ln -fs ../../.nvim/local nvim
 
 Adding a new plugin
 ===================
