@@ -37,6 +37,11 @@ set smartcase
 " folding
 set foldmethod=syntax
 noremap <space> za
+augroup remember_folds
+	autocmd!
+		au BufWinLeave ?* mkview 1
+		au BufWinEnter ?* silent! loadview 1
+augroup END
 
 " tab switch
 noremap <s-l> gt
@@ -76,6 +81,7 @@ set backupdir=~/.nvim-temp,.
 set directory=~/.nvim-temp,.
 set viminfo='20,\"50,n~/.nvim-temp/_viminfo
 set viewdir=~/.nvim-temp/viewdir/
+let g:netrw_home='~/.nvim-temp/'
 
 " omni completion
 " remap ctrl + space to code completion
