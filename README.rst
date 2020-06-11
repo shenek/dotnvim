@@ -58,6 +58,16 @@ deoplete
 
 Completion tool
 
+FastFold
+--------
+
+better folding
+
+vim-coiled-snake
+----------------
+
+extra folding for python
+
 
 Hints
 =====
