@@ -143,6 +143,9 @@ set laststatus=2
 
 "" ale plugin
 
+" enable virtualtext cursor
+let g:ale_virtualtext_cursor = 1
+
 " fixers
 let g:ale_fixers = {
 \  'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
@@ -223,11 +226,48 @@ let g:fzf_preview_window = ''
 nmap ff :FZFRg<cr>
 
 "" LanguageClient-neovim
-let g:LanguageClient_serverCommands = {'rust': ['rls'], 'python': ['pyls'],}
+let g:LanguageClient_serverCommands = {'rust': ['rust-analyzer'], 'python': ['pyls'],}
+let g:LanguageClient_completionPreferTextEdit = 1
+let g:LanguageClient_useVirtualText = 'All'
+let g:LanguageClient_usePopupHover = 1
+let g:LanguageClient_virtualTextPrefix = '-- '
+let g:LanguageClient_diagnosticsDisplay = {
+	\ 1: {
+	\ 	"name": "Error",
+	\ 	"texthl": "ALEError",
+	\ 	"signText": "✖",
+	\ 	"signTexthl": "ALEErrorSign",
+	\ 	"virtualTexthl": "Folded",
+	\ },
+	\ 2: {
+	\ 	"name": "Warning",
+	\ 	"texthl": "ALEWarning",
+	\ 	"signText": "⚠",
+	\ 	"signTexthl": "ALEWarningSign",
+	\ 	"virtualTexthl": "Folded",
+	\ },
+	\ 3: {
+	\ 	"name": "Information",
+	\ 	"texthl": "ALEInfo",
+	\ 	"signText": "ℹ",
+	\ 	"signTexthl": "ALEInfoSign",
+	\ 	"virtualTexthl": "Folded",
+	\ },
+	\ 4: {
+	\ 	"name": "Hint",
+	\ 	"texthl": "ALEInfo",
+	\ 	"signText": "➤",
+	\ 	"signTexthl": "ALEInfoSign",
+	\ 	"virtualTexthl": "Folded",
+	\ },
+\ }
+set completefunc=LanguageClient#complete
+set completeopt=menuone,preview,noinsert,noselect
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+"call LanguageClient#setDiagnosticsList('Quickfix')
 
 "" deoplete
 let g:deoplete#enable_at_startup = 1
