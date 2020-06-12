@@ -108,6 +108,7 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
 Plug 'kalekundert/vim-coiled-snake'
 Plug 'Konfekt/FastFold'
+Plug 'ncm2/float-preview.nvim'
 call plug#end()
 
 
@@ -274,7 +275,7 @@ let g:LanguageClient_diagnosticsDisplay = {
 	\ },
 \ }
 set completefunc=LanguageClient#complete
-set completeopt=menuone,preview,noinsert,noselect
+set completeopt=menuone
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
@@ -283,3 +284,6 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 "" deoplete
 let g:deoplete#enable_at_startup = 1
+
+"" float-preview.nvim
+let g:float_preview#docked = 0

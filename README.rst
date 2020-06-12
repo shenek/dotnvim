@@ -68,6 +68,10 @@ vim-coiled-snake
 
 extra folding for python
 
+float-preview.nvim
+------------------
+
+nicer float-preview (no preview windows)
 
 Hints
 =====
