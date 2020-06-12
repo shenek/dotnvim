@@ -76,7 +76,12 @@ nicer float-preview (no preview windows)
 vim-sandwich
 ------------
 
-Handles surrounding braces
+handles surrounding braces
+
+vim-highlightedyank
+-------------------
+
+keep yanked text highlighted
 
 Hints
 =====

@@ -110,6 +110,7 @@ Plug 'kalekundert/vim-coiled-snake'
 Plug 'Konfekt/FastFold'
 Plug 'ncm2/float-preview.nvim'
 Plug 'machakann/vim-sandwich'
+Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 
@@ -288,3 +289,6 @@ let g:deoplete#enable_at_startup = 1
 
 "" float-preview.nvim
 let g:float_preview#docked = 0
+
+"" vim-highlightedyank
+let g:highlightedyank_highlight_duration = -1
