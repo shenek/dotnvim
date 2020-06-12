@@ -109,6 +109,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
 Plug 'kalekundert/vim-coiled-snake'
 Plug 'Konfekt/FastFold'
 Plug 'ncm2/float-preview.nvim'
+Plug 'machakann/vim-sandwich'
 call plug#end()
 
 

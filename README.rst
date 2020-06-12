@@ -73,6 +73,11 @@ float-preview.nvim
 
 nicer float-preview (no preview windows)
 
+vim-sandwich
+------------
+
+Handles surrounding braces
+
 Hints
 =====
 Plugin management:
@@ -83,3 +88,8 @@ Fuzzy search
 ------------
 :FZF*
 ff - open ripgrep dialog
+
+Braces
+------
+adding in visual mode sa{
+deleting in braces mode sd{
