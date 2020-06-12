@@ -234,7 +234,11 @@ let g:fzf_preview_window = ''
 nmap ff :FZFRg<cr>
 
 "" LanguageClient-neovim
-let g:LanguageClient_serverCommands = {'rust': ['rust-analyzer'], 'python': ['pyls'],}
+let g:LanguageClient_serverCommands = {
+	\ 'rust': ['rust-analyzer'], 
+	\ 'python': ['pyls', '-vv', '--log-file', '~/pyls.log'],
+\ }
+let g:LanguageClient_settingsPath= expand('~/.nvim/settings.json')
 let g:LanguageClient_completionPreferTextEdit = 1
 let g:LanguageClient_useVirtualText = 'All'
 let g:LanguageClient_usePopupHover = 1
