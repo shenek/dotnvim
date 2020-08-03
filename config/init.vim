@@ -277,7 +277,7 @@ let g:LanguageClient_diagnosticsDisplay = {
 	\ },
 \ }
 set completefunc=LanguageClient#complete
-set completeopt=menuone
+set completeopt=menuone,noinsert,noselect
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
