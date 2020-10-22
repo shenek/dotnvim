@@ -240,6 +240,9 @@ nmap ff :FZFRg<cr>
 let g:LanguageClient_serverCommands = {
 	\ 'rust': ['rust-analyzer'], 
 	\ 'python': ['pyls', '-vv', '--log-file', '~/pyls.log'],
+	\ 'vue': ['vls'],
+	\ 'javascript': ['javascript-typescript-stdio'],
+	\ 'typescript': ['javascript-typescript-stdio'],
 \ }
 let g:LanguageClient_settingsPath= expand('~/.nvim/settings.json')
 let g:LanguageClient_completionPreferTextEdit = 1
