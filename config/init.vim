@@ -184,22 +184,16 @@ let g:ale_virtualenv_dir_names = [$VIRTUAL_ENV]
 " Try to read flake8 options from an env variable
 if !empty($FLAKE8_OPTIONS)
 	let g:ale_python_flake8_options = $FLAKE8_OPTIONS
-else
-	let g:ale_python_flake8_options = "--ignore=E203 --max-line-length=100"
 endif
 
 " Try to read black options from an env variable
 if !empty($BLACK_OPTIONS)
 	let g:ale_python_black_options = $BLACK_OPTIONS
-else
-	let g:ale_python_black_options = "--line-length 100"
 endif
 "
 " Try to read isort options from an env variable
 if !empty($ISORT_OPTIONS)
 	let g:ale_python_isort_options = $ISORT_OPTIONS
-else
-	let g:ale_python_isort_options = "--line-width 100"
 endif
 
 " mypy search path
@@ -239,8 +233,8 @@ nmap ff :FZFRg<cr>
 "" LanguageClient-neovim
 let g:LanguageClient_serverCommands = {
 	\ 'rust': ['rust-analyzer'], 
-	\ 'python': ['pyls', '-vv', '--log-file', '~/pyls.log'],
-	\ 'vue': ['vls'],
+	\ 'python': ['pyls'],
+	\ 'vue': ['vls'], 
 	\ 'javascript': ['javascript-typescript-stdio'],
 	\ 'typescript': ['javascript-typescript-stdio'],
 \ }
