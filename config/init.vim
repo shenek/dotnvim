@@ -19,6 +19,14 @@ set shiftwidth=4
 set tabstop=4  "tab is displayed as 4 spaces
 set smarttab
 
+" Override tabs for some kind of files
+augroup file_type_overrides
+	autocmd!
+	au FileType vue setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+	au FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+	au FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+augroup END
+
 " keep the cursor in the screen center
 set scrolloff=999
 
