@@ -119,6 +119,7 @@ Plug 'Konfekt/FastFold'
 Plug 'ncm2/float-preview.nvim'
 Plug 'machakann/vim-sandwich'
 Plug 'machakann/vim-highlightedyank'
+Plug 'projectfluent/fluent.vim'
 call plug#end()
 
 
