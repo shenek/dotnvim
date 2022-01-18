@@ -237,7 +237,11 @@ let g:indent_guides_start_level = 2
 let g:fzf_command_prefix = 'FZF'
 " Disables preview window
 let g:fzf_preview_window = ''
-nmap ff :FZFRg<cr>
+nmap fr :FZFRg<cr>
+nmap ff :FZFFiles<cr>
+nmap fg :FZFGitFiles<cr>
+nmap fw :FZFWindows<cr>
+nmap fh :FZFHistory<cr>
 
 "" LanguageClient-neovim
 let g:LanguageClient_serverCommands = {
