@@ -246,7 +246,7 @@ nmap fh :FZFHistory<cr>
 "" LanguageClient-neovim
 let g:LanguageClient_serverCommands = {
 	\ 'rust': ['rust-analyzer'], 
-	\ 'python': ['pyls'],
+	\ 'python': ['pylsp'],
 	\ 'vue': ['vls'], 
 	\ 'javascript': ['javascript-typescript-stdio'],
 	\ 'typescript': ['javascript-typescript-stdio'],
