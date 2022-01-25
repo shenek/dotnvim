@@ -43,7 +43,6 @@ set incsearch
 set smartcase
 
 " folding
-set foldmethod=syntax
 noremap <space> za
 augroup remember_folds
 	autocmd!
@@ -114,12 +113,11 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
-Plug 'kalekundert/vim-coiled-snake'
-Plug 'Konfekt/FastFold'
 Plug 'ncm2/float-preview.nvim'
 Plug 'machakann/vim-sandwich'
 Plug 'machakann/vim-highlightedyank'
 Plug 'projectfluent/fluent.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 
@@ -302,3 +300,28 @@ let g:float_preview#docked = 0
 
 "" vim-highlightedyank
 let g:highlightedyank_highlight_duration = -1
+
+"" treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+	ensure_installed = "all",
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false,
+	},
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
+	indent = {
+		enable = true
+	},
+}
+EOF
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()

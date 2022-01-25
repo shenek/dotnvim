@@ -58,16 +58,6 @@ deoplete
 
 Completion tool
 
-FastFold
---------
-
-better folding
-
-vim-coiled-snake
-----------------
-
-extra folding for python
-
 float-preview.nvim
 ------------------
 
@@ -82,6 +72,12 @@ vim-highlightedyank
 -------------------
 
 keep yanked text highlighted
+
+nvim-treesitter
+---------------
+
+syntax highlighting (should be a part of neovim 0.7)
+run :TSUpdate
 
 Hints
 =====
