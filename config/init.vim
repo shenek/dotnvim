@@ -319,7 +319,8 @@ require'nvim-treesitter.configs'.setup {
 		},
 	},
 	indent = {
-		enable = true
+		enable = true,
+		disable = { "yaml", "python", },  -- treesitter doesn't currently work well for python
 	},
 }
 EOF
