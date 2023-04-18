@@ -167,14 +167,14 @@ let g:ale_virtualtext_cursor = 1
 " fixers
 let g:ale_fixers = {
 \  'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-\  'python': ['isort', 'black', 'remove_trailing_lines', 'trim_whitespace'],
+\  'python': ['ruff', 'black', 'remove_trailing_lines', 'trim_whitespace'],
 \}
 let g:ale_fix_on_save = 1
 
 " linters
 let g:ale_linters = {
 \  'rust': ['cargo'],
-\  'python': ['flake8', 'mypy', 'bandit'],
+\  'python': ['ruff', 'mypy', 'bandit'],
 \}
 
 " signs
