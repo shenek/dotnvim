@@ -302,6 +302,7 @@ let g:float_preview#docked = 0
 let g:highlightedyank_highlight_duration = -1
 
 "" treesitter
+lua require'nvim-treesitter'.setup()
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
 	ensure_installed = "all",
