@@ -111,13 +111,16 @@ Plug 'dense-analysis/ale'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
 Plug 'ncm2/float-preview.nvim'
 Plug 'machakann/vim-sandwich'
 Plug 'machakann/vim-highlightedyank'
 Plug 'projectfluent/fluent.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
 call plug#end()
 
 
@@ -241,59 +244,91 @@ nmap fg :FZFGitFiles<cr>
 nmap fw :FZFWindows<cr>
 nmap fh :FZFHistory<cr>
 
-"" LanguageClient-neovim
-let g:LanguageClient_serverCommands = {
-	\ 'rust': ['rust-analyzer'], 
-	\ 'python': ['pylsp'],
-	\ 'vue': ['vls'], 
-	\ 'javascript': ['javascript-typescript-stdio'],
-	\ 'typescript': ['javascript-typescript-stdio'],
-\ }
-let g:LanguageClient_settingsPath= expand('~/.nvim/settings.json')
-let g:LanguageClient_completionPreferTextEdit = 1
-let g:LanguageClient_useVirtualText = 'All'
-let g:LanguageClient_usePopupHover = 1
-let g:LanguageClient_virtualTextPrefix = '-- '
-let g:LanguageClient_diagnosticsDisplay = {
-	\ 1: {
-	\ 	"name": "Error",
-	\ 	"texthl": "ALEError",
-	\ 	"signText": "✖",
-	\ 	"signTexthl": "ALEErrorSign",
-	\ 	"virtualTexthl": "Folded",
-	\ },
-	\ 2: {
-	\ 	"name": "Warning",
-	\ 	"texthl": "ALEWarning",
-	\ 	"signText": "⚠",
-	\ 	"signTexthl": "ALEWarningSign",
-	\ 	"virtualTexthl": "Folded",
-	\ },
-	\ 3: {
-	\ 	"name": "Information",
-	\ 	"texthl": "ALEInfo",
-	\ 	"signText": "ℹ",
-	\ 	"signTexthl": "ALEInfoSign",
-	\ 	"virtualTexthl": "Folded",
-	\ },
-	\ 4: {
-	\ 	"name": "Hint",
-	\ 	"texthl": "ALEInfo",
-	\ 	"signText": "➤",
-	\ 	"signTexthl": "ALEInfoSign",
-	\ 	"virtualTexthl": "Folded",
-	\ },
-\ }
-set completefunc=LanguageClient#complete
-set completeopt=menuone,noinsert,noselect
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-"call LanguageClient#setDiagnosticsList('Quickfix')
+"" nvim-lspconfig
+lua <<EOF
+local lspconfig = require('lspconfig');
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+lspconfig.pylsp.setup{ capabilities = capabilities }
+lspconfig.rust_analyzer.setup{ capabilities = capabilities }
 
-"" deoplete
-let g:deoplete#enable_at_startup = 1
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
+-- AutoCompletion
+local cmp = require 'cmp'
+cmp.setup {
+    snippet = {},
+    mapping = cmp.mapping.preset.insert({
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
+        ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
+        -- C-b (back) C-f (forward) for snippet placeholder navigation.
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        },
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            --elseif luasnip.expand_or_jumpable() then
+            --    luasnip.expand_or_jump()
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            --elseif luasnip.jumpable(-1) then
+            --    luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+    }),
+    sources = {
+        { name = 'nvim_lsp', group_index = 1 },
+        { name = 'path', group_index = 2 },
+        { name = 'buffer', group_index = 3 },
+    },
+}
+
+EOF
 
 "" float-preview.nvim
 let g:float_preview#docked = 0
