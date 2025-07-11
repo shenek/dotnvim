@@ -289,6 +289,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+require'lspconfig'.vuels.setup{}
+
 -- AutoCompletion
 local cmp = require 'cmp'
 cmp.setup {
