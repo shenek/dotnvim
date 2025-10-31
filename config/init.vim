@@ -107,7 +107,6 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-Plug 'dense-analysis/ale'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
@@ -117,10 +116,9 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'projectfluent/fluent.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
+Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
+Plug 'rafamadriz/friendly-snippets'
+Plug 'nvim-mini/mini.icons'
 call plug#end()
 
 
@@ -162,60 +160,6 @@ let g:airline_symbols.whitespace = 'Ξ'
 " airline bugs...
 set laststatus=2
 
-"" ale plugin
-
-" enable virtualtext cursor
-let g:ale_virtualtext_cursor = 1
-
-" fixers
-let g:ale_fixers = {
-\  'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-\  'python': ['ruff', 'black', 'remove_trailing_lines', 'trim_whitespace'],
-\}
-let g:ale_fix_on_save = 1
-
-" linters
-let g:ale_linters = {
-\  'rust': ['cargo'],
-\  'python': ['ruff', 'mypy', 'bandit'],
-\}
-
-" signs
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠'
-"highlight ALEErrorSign ctermbg=NONE ctermfg=red
-"highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-let g:ale_completion_enabled = 0
-
-" python
-let g:ale_python_auto_pipenv = 0
-let g:ale_virtualenv_dir_names = [$VIRTUAL_ENV]
-
-" Try to read flake8 options from an env variable
-if !empty($FLAKE8_OPTIONS)
-	let g:ale_python_flake8_options = $FLAKE8_OPTIONS
-endif
-
-" Try to read black options from an env variable
-if !empty($BLACK_OPTIONS)
-	let g:ale_python_black_options = $BLACK_OPTIONS
-endif
-"
-" Try to read isort options from an env variable
-if !empty($ISORT_OPTIONS)
-	let g:ale_python_isort_options = $ISORT_OPTIONS
-endif
-
-" mypy search path
-let g:ale_python_mypy_options = "--cache-dir ~/.mypy_cache --python-executable python --ignore-missing-imports"
-
-" rust
-let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
-let g:ale_rust_cargo_clippy_options = '--all-features -- -W clippy::style -W clippy::correctness -W clippy::complexity -W clippy::pedantic -W clippy::nursery -W clippy::perf -W clippy::cargo -A clippy::restriction -W clippy::dbg_macro -A clippy::module_name_repetitions'
-let g:ale_rust_cargo_check_all_targets = 1
-let g:ale_rust_rustfmt_options = "--edition 2018"
-
-
 "" gitgutter
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '≈'
@@ -246,10 +190,9 @@ nmap fh :FZFHistory<cr>
 
 "" nvim-lspconfig
 lua <<EOF
-local lspconfig = require('lspconfig');
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-lspconfig.pylsp.setup{ capabilities = capabilities }
-lspconfig.rust_analyzer.setup{ capabilities = capabilities }
+vim.lsp.enable('pylsp')
+vim.lsp.enable('rust_analyzer')
+--vim.lsp.enable('vuels')
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -289,48 +232,73 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require'lspconfig'.vuels.setup{}
+-- autocompletion
+require("blink.cmp").setup({
+	-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+	-- 'super-tab' for mappings similar to vscode (tab to accept)
+	-- 'enter' for enter to accept
+	-- 'none' for no mappings
+	--
+	-- All presets have the following mappings:
+	-- C-space: Open menu or open docs if already open
+	-- C-n/C-p or Up/Down: Select next/previous item
+	-- C-e: Hide menu
+	-- C-k: Toggle signature help (if signature.enabled = true)
+	--
+	-- See :h blink-cmp-config-keymap for defining your own keymap
+	keymap = { preset = 'enter' },
 
--- AutoCompletion
-local cmp = require 'cmp'
-cmp.setup {
-    snippet = {},
-    mapping = cmp.mapping.preset.insert({
-        ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
-        ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
-        -- C-b (back) C-f (forward) for snippet placeholder navigation.
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            --elseif luasnip.expand_or_jumpable() then
-            --    luasnip.expand_or_jump()
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            --elseif luasnip.jumpable(-1) then
-            --    luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-    }),
-    sources = {
-        { name = 'nvim_lsp', group_index = 1 },
-        { name = 'path', group_index = 2 },
-        { name = 'buffer', group_index = 3 },
-    },
-}
+	appearance = {
+		-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+		-- Adjusts spacing to ensure icons are aligned
+		nerd_font_variant = 'mono'
+	},
 
+	-- (Default) Only show the documentation popup when manually triggered
+	completion = { 
+		ghost_text = { enabled = true },
+		documentation = { auto_show = true },
+		menu = {
+			draw = {
+				components = {
+					kind_icon = {
+						text = function(ctx)
+						local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+						return kind_icon
+					end,
+					-- (optional) use highlights from mini.icons
+					highlight = function(ctx)
+						local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+						return hl
+					end,
+					},
+					kind = {
+						-- (optional) use highlights from mini.icons
+						highlight = function(ctx)
+							local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+							return hl
+						end,
+					}
+				}
+			}
+		}
+	},
+
+	-- Default list of enabled providers defined so that you can extend it
+	-- elsewhere in your config, without redefining it, due to `opts_extend`
+	sources = {
+		default = { 'lsp', 'path', 'snippets', 'buffer' },
+	},
+
+	-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+	-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+	-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+	--
+	-- See the fuzzy documentation for more information
+	fuzzy = { implementation = "prefer_rust_with_warning" }
+})
 EOF
+
 
 "" float-preview.nvim
 let g:float_preview#docked = 0
